@@ -1,0 +1,38 @@
+Reinstall Ubuntu Grub Bootloader After Windows Wipes it Out
+If you run a dual-boot system with Linux and Windows, this has happened to you. You had to do your monthly reinstall of Windows, and now you don’t see the linux bootloader anymore, so you can’t boot into Ubuntu or whatever flavor of linux you prefer.
+
+Here’s the quick and easy way to re-enable Grub.
+
+1) Boot off the LiveCD
+
+2) Open a Terminal and type in the following commands, noting that the first command will put you into the grub “prompt”, and the next 3 commands will be executed there. Also note that hd0,0 implies the first hard drive and the first partition on that drive, which is where you probably installed grub to during installation. If not, then adjust accordingly.
+
+sudo grub
+
+> root (hd0,0)
+
+> setup (hd0)
+
+> exit
+
+Reboot (removing the livecd), and your boot menu should be back.
+
+ 
+
+Only read below if Windows is now missing from the boot menu
+
+If you installed Ubuntu before you installed Windows, then Ubuntu will not have anything in the grub configuration for Windows. This is where you’ll have to do a bit of manual editing to the grub boot menu file.
+
+If you open the file /boot/grub/menu.lst with the following command:
+
+sudo gedit /boot/grub/menu.lst
+
+You’ll see a sample section for Windows, which you’ll want to uncomment and add to the boot menu list in whatever position you want it in. (uncomment by removing the #’s)
+
+# title   Windows 95/98/NT/2000
+# root   (hd0,0)
+# makeactive
+# chainloader   +1
+
+Note that you should also verify that hd0,0 is the correct location for Windows. If you had installed Windows on the 4th partition on the drive, then you should change it to (hd0,3)
+
